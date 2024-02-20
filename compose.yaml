@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  db:
+    hostname: sql-db
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    container_name: db
+    restart: always
+    command: "--default-authentication-plugin=mysql_native_password"
+    volumes:
+      - /db_data:/var/lib/mysql
+    deploy: 
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_USER=${MYSQL_DB_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_HOST=${ROOT_HOST}
+    networks:
+      backend:
+        ipv4_address: 172.20.0.10
+
+
+  web:
+    hostname: web
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    container_name: web
+    restart: always
+    depends_on:
+      - db
+    links:
+      - "db"
+    deploy:
+    environment:
+      - DB_NAME=${DATABASE_NAME}
+      - DB_USER=${MYSQL_DB_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_HOST=${HOST}
+    networks:
+      backend:
+        ipv4_address: 172.20.0.5
+
+  
+    
