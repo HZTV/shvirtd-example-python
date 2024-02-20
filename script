@@ -1,0 +1,6 @@
+#!/bin/bash
+git init && \
+git clone https://github.com/HZTV/shvirtd-example-python.git && \
+cd /opt/shvirtd-example-python// && \  
+chmod -R 777 /opt/* && \
+sudo docker compose -f /opt/shvirtd-example-python/proxy.yaml up -d
