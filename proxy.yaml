@@ -6,6 +6,8 @@ include:
 services:
 
   reverse-proxy:
+    hostname: reverse-proxy
+    container_name: reverse-proxy
     image: haproxy
     restart: always
     networks:
@@ -16,6 +18,8 @@ services:
     - ./haproxy/reverse/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:rw 
 
   ingress-proxy:
+    hostname: ingress-proxy
+    container_name: ingress-proxy
     image: nginx:latest
     restart: always
     network_mode: host
